@@ -28,6 +28,15 @@
                    resolve:(RCTPromiseResolveBlock)resolve
                   orReject:(RCTPromiseRejectBlock)reject;
 
+- (void)startMonitoring:(NSNumber*)lat
+                 andLng:(NSNumber*)lng
+                 andFlr:(NSNumber*)flr
+                resolve:(RCTPromiseResolveBlock)resolve
+               orReject:(RCTPromiseRejectBlock)reject;
+
+- (void)stopMonitoringForWayfinding:(RCTPromiseResolveBlock)resolve
+                           orReject:(RCTPromiseRejectBlock)reject;
+
 
 #pragma mark IALocationManagerDelegate Methods
 
@@ -75,6 +84,13 @@
  */
 - (void)indoorLocationManager:(nonnull IALocationManager*)manager
     calibrationQualityChanged:(enum ia_calibration)quality;
+
+/**
+ * Tells the delegate that the wayfinding route was updated.
+ * @param route Route where to go.
+ */
+- (void)indoorLocationManager:(nonnull IALocationManager *)manager
+    didUpdateRoute:(nonnull IARoute *)route
 
 
 @end

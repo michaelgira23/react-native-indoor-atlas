@@ -102,6 +102,31 @@ RCT_REMAP_METHOD(setLocation,
     resolve(nil);
 }
 
+RCT_REMAP_METHOD(startMonitoring,
+                 setLocationWithLat:(NSNumber*)lat
+                 andLng:(NSNumber*)lng
+                 andFlr:(NSNumber*)flr
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 orReject:(RCTPromiseRejectBlock)reject)
+{
+    IALocationManager *locationManager = [IALocationManager sharedInstance];
+    IAWayfindingRequest *request = [[IAWayfindingRequest alloc] init];
+    request.coordinate = CLLocationCoordinate2DMake(setLocationWithLat, andLng);
+    request.floor = andFlr;
+    [locationManager startMonitoringForWayfinding:request];
+	resolve(nil);
+}
+
+RCT_REMAP_METHOD(stopMonitoringForWayfinding,
+                 resolve:(RCTPromiseResolveBlock)resolve
+                 orReject:(RCTPromiseRejectBlock)reject)
+{
+    IALocationManager *locationManager = [IALocationManager sharedInstance];
+    [locationManager stopMonitoringForWayfinding];
+    resolve(nil);
+}
+
+
 - (void)indoorLocationManager:(nonnull IALocationManager*)manager
            didUpdateLocations:(nonnull NSArray*)locations
 {
@@ -151,6 +176,16 @@ RCT_REMAP_METHOD(setLocation,
             break;
     }
     NSLog(@"calibrationQualityChanged: %@", sQuality);
+}
+
+- (void)indoorLocationManager:(IALocationManager *)manager
+               didUpdateRoute:(IARoute *)route {
+    NSLog(@"didUpdateRoute: %@", route);
+}
+
+- (void)indoorLocationManager:(nonnull IALocationManager*)manager
+               didUpdateRoute:(nonnull IAStatus*)route {
+    NSLog(@"didUpdateRoute: %@", route);
 }
 
 @end
